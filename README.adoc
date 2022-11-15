@@ -1,0 +1,151 @@
+= cpp-verify
+:author: Max FERGER
+// Metadata:
+:description: Provide `+verify(<condition>)+` in modern C++ for easy  pretty-printing of conditions.
+:revnumber: 0.0.0
+// References:
+:url-repo: https://github.com/UnePierre/cpp-verify
+:url-issues: {url-repo}/-/issues
+:url-releases: {url-repo}/-/releases
+:url-ccache-usage: https://cristianadam.eu/20200113/speeding-up-c-plus-plus-github-actions-using-ccache/
+:url-ccache: https://ccache.dev
+:url-commandname-extensions-harmful: http://www.talisman.org/~erlkonig/documents/commandname-extensions-considered-harmful/
+:url-conventional-commits: https://www.conventionalcommits.org
+:url-ctest: https://cmake.org/cmake/help/book/mastering-cmake/chapter/Testing%20With%20CMake%20and%20CTest.html
+:url-optimal-cmake-project-structure: https://palikar.github.io/posts/cmake_structure/
+:url-pitchfork-layout: https://github.com/vector-of-bool/pitchfork
+// Settings:
+:experimental:
+:icons: font
+:idprefix:
+:idseparator: -
+:sectanchors:
+:toc:
+ifndef::indir[:indir: .]
+//
+// Help:
+// Convert this document to PDF:
+// asciidoctor-pdf --require=asciidoctor-indir_ext --warnings --timings README.adoc
+//
+// Note that README.adoc is produced my CMake's configure() from docs/README.in.adoc.
+// Thus all (include) paths are relative to the root of the project.
+
+== About
+
+{description}
+
+== Documentation
+
+TODO!
+
+== Contribution
+
+=== Issues
+
+This project uses GitHub's [issue tracker](https://github.com/UnePierre/cpp-verify/issues).
+
+=== Directory Layout
+
+link:CMakeLists.txt[] and its includes try to follow ideas from {url-optimal-cmake-project-structure}[The optimal CMake project structure^] by Stanislav Arnaudov.
+
+More importantly, this project aims to adhere to {url-pitchfork-layout}[The Pitchfork Layout (PFL)^] by Colby Pike.
+This is also the source for the following directory description (though they were adapted to this specific project):
+
+PFL prescribes several directories that should appear at the root of the project tree. Not all of the directories are required, but they have an assigned purpose, and no other directory in the filesystem may assume the role of one of these directories. That is, these directories must be the ones used if their purpose is required.
+
+Other directories should not appear at the root.
+
+link:build/[]::
+    A special directory that should not be considered part of the source of the project.
+    Used for storing ephemeral build results.
+    Must not be checked into source control.
+    If using source control, must be ignored using source control ignore-lists.
+    -- So .gitignore has an entry for it.
+
+link:src/[]::
+    Main compilable source location.
+    Must be present for projects with compiled components that do not use submodules.
+    In the presence of link:include/[], also contains private headers.
+    -- So far, we don't use private headers in this project.
+
+link:include/[]::
+    Directory for public headers.
+    May be present.
+    May be omitted for projects that do not distinguish between private/public headers.
+    May be omitted for projects that use submodules.
+    -- This is a header-only library, so here is the main content.
+
+link:tests/[]::
+    Directory for tests.
+    -- That means regression tests. Unit-tests live close to the source.
+
+link:examples/[]::
+    Directory for samples and examples.
+    -- empty
+
+link:external/[]::
+    Directory for packages/projects to be used by the project, but not edited as part of the project.
+    -- All necessary libraries are fetched by link:external/CMakeFiles.txt[].
+
+link:extras/[]::
+    Directory containing extra/optional submodules for the project.
+    -- empty
+
+link:data/[]::
+    Directory containing non-source code aspects of the project.
+    This might include graphics and markup files.
+    -- It does.
+
+link:tools/[]::
+    Directory containing development utilities, such as build and refactoring scripts.
+    -- empty
+
+link:docs/[]::
+    Directory for project documentation.
+    -- And copies of the license files of used packages/projects.
+
+link:libs/[]::
+    Directory for main project submodules.
+    The link:libs/[] directory must not be used unless the project wishes to subdivide itself into submodules.
+    Its presence excludes the link:src/[] and link:include/[] directories.
+    -- Unused!
+
+
+=== File Name Conventions
+
+Who has ever tried to find the underscore on a foreign keyboard?
+I (Max) have, and it is cumbersome.
+
+So, here are the most important rules for filenames:
+
+1. Filename rules apply to names of folders.
+
+2. No whitespace in filenames.
+
+3. No "foreign" characters in filenames. Stick to `[a-zA-Z0-9_.-+]`.
+
+4. Avoid unnecessary abbreviations.
+
+5. Separate words preferably with a single dash `"-"`.
+
+6. No underscores in examples.
+
+7. No underscores in executables. -- Neither in scripts, which are executables for that matter.
+
+8. No uppercase in executables. -- Not even `"UML"` :-(
+
+9. Avoid uppercase letters, whenever it's not (really) helping.
+
+    a. Exception: `README.adoc`, `LICENSE.adoc` -- these must stick out.
+
+    b. Exception: `CMakeFile` and friends -- it's conventional for those.
+
+    c. Exception: QML-files -- Qt requires it.
+
+10. No extension for (bash) scripts -- Because {url-commandname-extensions-harmful}[Commandname Extensions [are\] Considered Harmful].
+
+11. TODO: coding guidelines for module / class names and their filenames.
+
+=== Conventional Commits
+
+Developers are encouraged to adhere to the {url-conventional-commits}[Conventional Commits] "[...] specification for adding human and machine readable meaning to commit messages".
