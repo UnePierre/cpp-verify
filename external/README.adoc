@@ -1,0 +1,7 @@
+# Directory `external/`
+
+All necessary libraries are fetched by external/CMakeFiles.txt.
+
+## Description from the PFL
+
+Directory for packages/projects to be used by the project, but not edited as part of the project.
